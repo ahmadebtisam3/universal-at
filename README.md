@@ -20,6 +20,7 @@ To deploy this project run
   source ./scrapy_installed/bin/activate
   git clone https://github.com/ahmadebtisam3/universal-at
   pip install scrapy
+  pip install scrapy-cookies
   scrapy crawl uni_ve
 ```
 

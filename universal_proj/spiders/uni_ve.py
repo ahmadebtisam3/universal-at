@@ -31,11 +31,6 @@ class UniVeSpider(scrapy.Spider):
         "Cache-Control": "max-age=0",
         "referrer": "https://www.universal.at/sport-freizeit/",
     }
-    # body = "{\"previousRequest\":{\"query\":\"\",\"clientId\":\"UniversalAt\",\"count\":72,\"filters\":{},\"locale\":\"de_DE\",\"minAvailCode\":2,\"order\":\"relevance\",\"pageNoDisplay\":1,\"specialArticles\":[],\"start\":0,\"version\":15,\"noLegacyEsi\":false},\"userAgent\":\"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:92.0) Gecko/20100101 Firefox/92.0\",\"personalization\":\"$$-2$$web$$s-2\",\"channel\":\"web\",\"clientId\":\"UniversalAt\",\"count\":72,\"filters\":{},\"locale\":\"de_AT\",\"minAvailCode\":2,\"order\":\"relevance\",\"pageNoDisplay\":1,\"specialArticles\":[],\"start\":0,\"version\":15,\"noLegacyEsi\":false,\"uri\":\"/sport-freizeit/\",\"allowTest\":true,\"seoFiltered\":false,\"doRedirectToCategoryUrl\":false,\"hostname\":\"https://www.universal.at\",\"isBot\":false}"
-    body = "{\"previousRequest\":{\"query\":\"\",\"clientId\":\"UniversalAt\",\"count\":72,\"filters\":{},\"locale\":\"de_DE\",\"minAvailCode\":2,\"order\":\"relevance\",\"pageNoDisplay\":1,\"specialArticles\":[],\"start\":0,\"version\":15,\"noLegacyEsi\":false},\"userAgent\":\"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:92.0) Gecko/20100101 Firefox/92.0\",\"source\":\"extern\",\"personalization\":\"$$-2$$web$$s-2\",\"channel\":\"web\",\"clientId\":\"UniversalAt\",\"count\":72,\"filters\":{},\"locale\":\"de_AT\",\"minAvailCode\":2,\"order\":\"relevance\",\"pageNoDisplay\":1,\"specialArticles\":[],\"start\":0,\"version\":15,\"noLegacyEsi\":false,\"uri\":\"/sport-freizeit/buecher-musik/buecher/\",\"allowTest\":true,\"seoFiltered\":false,\"doRedirectToCategoryUrl\":false,\"hostname\":\"https://www.universal.at\",\"isBot\":false}"
-    # body = "{\"previousRequest\":{\"query\":\"\",\"clientId\":\"UniversalAt\",\"count\":72,\"filters\":{},\"locale\":\"de_DE\",\"minAvailCode\":2,\"order\":\"relevance\",\"pageNoDisplay\":1,\"specialArticles\":[],\"start\":0,\"version\":15,\"noLegacyEsi\":false},\"userAgent\":\"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:92.0) Gecko/20100101 Firefox/92.0\",\"source\":\"extern\",\"personalization\":\"$$-2$$web$$s-2\",\"channel\":\"web\",\"clientId\":\"UniversalAt\",\"count\":72,\"filters\":{},\"locale\":\"de_AT\",\"minAvailCode\":2,\"order\":\"relevance\",\"pageNoDisplay\":1,\"specialArticles\":[],\"start\":0,\"version\":15,\"noLegacyEsi\":false,\"uri\":\"/sport-freizeit/buecher-musik/buecher/\",\"allowTest\":true,\"seoFiltered\":false,\"doRedirectToCategoryUrl\":false,\"hostname\":\"https://www.universal.at\",\"isBot\":false}"
-    # body = "{\"previousRequest\":{\"query\":\"\",\"clientId\":\"UniversalAt\",\"count\":72,\"filters\":{},\"locale\":\"de_DE\",\"minAvailCode\":2,\"order\":\"relevance\",\"pageNoDisplay\":1,\"specialArticles\":[],\"start\":0,\"version\":15,\"noLegacyEsi\":false},\"userAgent\":\"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:92.0) Gecko/20100101 Firefox/92.0\",\"source\":\"extern\",\"personalization\":\"$$-2$$web$$s-2\",\"channel\":\"web\",\"clientId\":\"UniversalAt\",\"count\":72,\"filters\":{},\"locale\":\"de_AT\",\"minAvailCode\":2,\"order\":\"relevance\",\"pageNoDisplay\":1,\"specialArticles\":[],\"start\":0,\"version\":15,\"noLegacyEsi\":false,\"uri\":\"/sport-freizeit/buecher-musik/musik/\",\"allowTest\":true,\"seoFiltered\":false,\"doRedirectToCategoryUrl\":false,\"hostname\":\"https://www.universal.at\",\"isBot\":false}"
-    # body = "{\"previousRequest\":{\"query\":\"\",\"clientId\":\"UniversalAt\",\"count\":72,\"filters\":{},\"locale\":\"de_DE\",\"minAvailCode\":2,\"order\":\"relevance\",\"pageNoDisplay\":1,\"specialArticles\":[],\"start\":0,\"version\":15,\"noLegacyEsi\":false},\"userAgent\":\"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:92.0) Gecko/20100101 Firefox/92.0\",\"source\":\"extern\",\"personalization\":\"$$-2$$web$$s-2\",\"channel\":\"web\",\"clientId\":\"UniversalAt\",\"count\":72,\"filters\":{},\"locale\":\"de_AT\",\"minAvailCode\":2,\"order\":\"relevance\",\"pageNoDisplay\":1,\"specialArticles\":[],\"start\":0,\"version\":15,\"noLegacyEsi\":false,\"uri\":\"/garten-heimwerken/\",\"allowTest\":true,\"seoFiltered\":false,\"doRedirectToCategoryUrl\":false,\"hostname\":\"https://www.universal.at\",\"isBot\":false}"
 
     def __init__(self, name=None, **kwargs):
         super().__init__(name=name, **kwargs)
@@ -123,22 +118,18 @@ class UniVeSpider(scrapy.Spider):
                 item = UniversalProjItem()
                 item['brand_name'] = product["brand"]["name"]
                 item['name'] = product["name"]
-                item['data_sheet_url'] = product["productDataSheet"]["url"]
                 images = []
-                oldprice = []
                 price = []
                 currency = []
                 product_url = []
                 sku = []
                 for product_type in product["variations"]:
                     images.append(product_type["imageUrl"])
-                    oldprice.append(product_type["oldPrice"]["value"])
                     price.append(product_type["price"]["value"])
                     currency.append(product_type["price"]["currency"])
                     product_url.append(bas_url+product_type['productUrl'])
                     sku.append(product_type['sku'])
                 item['image_url'] = images
-                item['old_price'] = oldprice
                 item['price'] = price
                 item['currency'] = currency
                 item['product_url'] = product_url
