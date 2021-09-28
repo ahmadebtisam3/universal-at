@@ -18,9 +18,9 @@ To deploy this project run
   sudo apt-get install python3-venv
   python3 -m venv scrapy_installed
   source ./scrapy_installed/bin/activate
-  git clone https://github.com/ahmadebtisam3/whish
+  git clone https://github.com/ahmadebtisam3/universal-at
   pip install scrapy
-  scrapy crawl whish_sp
+  scrapy crawl uni_ve
 ```
 
   

@@ -41,6 +41,7 @@ class UniVeSpider(scrapy.Spider):
         super().__init__(name=name, **kwargs)
         self.u_logger = self.get_logger()
         self.exporter = self._exporter_for_item()
+
     @staticmethod
     def get_logger(name=__name__):
         # defining custom logger
@@ -65,7 +66,6 @@ class UniVeSpider(scrapy.Spider):
         return "{\"previousRequest\":{\"query\":\"\",\"clientId\":\"UniversalAt\",\"count\":72,\"filters\":{},\"locale\":\"de_DE\",\"minAvailCode\":2,\"order\":\"relevance\",\"pageNoDisplay\":1,\"specialArticles\":[],\"start\":0,\"version\":15,\"noLegacyEsi\":false},\"userAgent\":\"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:92.0) Gecko/20100101 Firefox/92.0\",\"source\":\"extern\",\"personalization\":\"$$-2$$web$$s-2\",\"channel\":\"web\",\"clientId\":\"UniversalAt\",\"count\":72,\"filters\":{},\"locale\":\"de_AT\",\"minAvailCode\":2,\"order\":\"relevance\",\"pageNoDisplay\":1,\"specialArticles\":[],\"start\":0,\"version\":15,\"noLegacyEsi\":false,\"uri\":\""+ref+"\",\"allowTest\":true,\"seoFiltered\":false,\"doRedirectToCategoryUrl\":false,\"hostname\":\"https://www.universal.at\",\"isBot\":false}"
 
     def parse(self, response):
-        print(response)
         for uri in self.get_nav_links(response):
             sub_url = uri.xpath("@href").get()
             url = self.start_urls[0][:-1]+sub_url
@@ -86,7 +86,6 @@ class UniVeSpider(scrapy.Spider):
         yield resp
 
     def link_collector(self, response):
-        print("extracting links ..............")
         dic = json.loads(response.body)
         try:
             if dic.__contains__("toplinks"):
@@ -96,11 +95,7 @@ class UniVeSpider(scrapy.Spider):
                     # print(product_page_link)
                     yield self.get_data_from_search_api(url['url'])
         except KeyError as k:
-            print("********* key error occure at link collector ")
-            print(k)
-
-    def parse_links(self, response, link_lis):
-        pass
+            self.u_logger.error(k, exc_info=True)
 
     def get_data_from_search_api(self, ref):
         header = self.headers.copy()
@@ -151,10 +146,7 @@ class UniVeSpider(scrapy.Spider):
                 self.exporter.export_item(item)
             self.exporter.finish_exporting()
         except KeyError as e:
-            print("************************key error***********************")
-            print(e)
             self.u_logger.error(e, exc_info=True)
 
     def error_occured(self, response):
-        print("++++++++++++++++++search request not excepted  response status : ", response)
         self.u_logger.error("products not fetched "+str(response))
