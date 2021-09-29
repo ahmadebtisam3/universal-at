@@ -15,4 +15,4 @@ class UniversalProjItem(scrapy.Item):
     currency = scrapy.Field()
     product_url = scrapy.Field()
     sku = scrapy.Field()
-    
+

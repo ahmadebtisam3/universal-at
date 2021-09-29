@@ -83,8 +83,9 @@ class UniVeSpider(scrapy.Spider):
     def link_collector(self, response):
         dic = json.loads(response.body)
         try:
-            if dic.__contains__("toplinks"):
-                for url in dic['toplinks']['links']:
+            links = dic.get("toplinks")
+            if links:
+                for url in links['links']:
                     product_page_link = self.start_urls[0][:-1]+url['url']
                     self.u_logger.info(product_page_link)
                     # print(product_page_link)
